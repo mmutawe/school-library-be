@@ -1,6 +1,43 @@
 package com.mmutawe.projects.school.library.be;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
-public interface StudentRepository extends JpaRepository<Student,Long> {
+import java.util.List;
+import java.util.Optional;
+
+public interface StudentRepository extends JpaRepository<Student, Long> {
+    Optional<Student> findStudentByEmail(String email);
+
+    Optional<List<Student>> findAllByFirstNameEqualsAndLastNameEquals(String firstName, String lastName);
+
+    // JPQL: Java Persistence Query Language
+    //    @Query("SELECT s FROM Student s WHERE year(now()) - year(dob) >= 18")
+    // Native Query - PostgreSQL
+    @Query(
+            value = "SELECT * FROM students " +
+                    "WHERE EXTRACT(YEAR from AGE(now(), dob))  >= 18",
+            nativeQuery = true
+    )
+    Optional<List<Student>> findAllByAgeGreaterThan18();
+
+    @Query(
+            value = "SELECT * FROM students " +
+                    "WHERE email LIKE '%' || :domain || '%'",
+            nativeQuery = true
+    )
+    Optional<List<Student>> findAllUseEmailDomain(@Param("domain") String domain);
+
+    // return the number of affected rows after deletion
+    @Query(
+            value = "DELETE FROM students " +
+                    "WHERE email LIKE '%' || :domain || '%'",
+            nativeQuery = true
+    )
+    @Modifying
+    @Transactional
+    int deleteAllUseEmailDomain(@Param("domain") String domain);
 }
