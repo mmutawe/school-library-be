@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import java.time.LocalDate;
 
 @Entity(name = "Student")
 @Table(
@@ -16,6 +17,10 @@ import javax.persistence.UniqueConstraint;
                 @UniqueConstraint(
                         name = "student_email_unique",
                         columnNames = "email"
+                ),
+                @UniqueConstraint(
+                        name = "student_phone_number_unique",
+                        columnNames = "phone_number"
                 )
         }
 )
@@ -61,20 +66,36 @@ public class Student {
     private String email;
 
     @Column(
-            name = "age",
+            name = "address",
+            columnDefinition = "TEXT",
+//            unique = true,
             nullable = false
     )
-    private Integer age;
+    private String address;
+
+    @Column(
+            name = "phone_number",
+            columnDefinition = "TEXT",
+            nullable = false
+    )
+    private String contactNumber;
+
+    @Column(
+            name = "dob",
+            nullable = false
+    )
+    private LocalDate birthday;
 
     public Student() {
     }
 
-    public Student(Long id, String firstName, String lastName, String email, Integer age) {
-        this.id = id;
+    public Student(String firstName, String lastName, String email, String address, String contactNumber, LocalDate birthday) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.age = age;
+        this.address = address;
+        this.contactNumber = contactNumber;
+        this.birthday = birthday;
     }
 
     public Long getId() {
@@ -109,12 +130,28 @@ public class Student {
         this.email = email;
     }
 
-    public Integer getAge() {
-        return age;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
     }
 
     @Override
@@ -124,7 +161,9 @@ public class Student {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", age=" + age +
+                ", address='" + address + '\'' +
+                ", contactNumber='" + contactNumber + '\'' +
+                ", birthday=" + birthday +
                 '}';
     }
 }
