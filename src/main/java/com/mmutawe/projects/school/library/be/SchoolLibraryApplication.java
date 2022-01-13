@@ -1,5 +1,6 @@
 package com.mmutawe.projects.school.library.be;
 
+import com.github.javafaker.Faker;
 import org.hibernate.ObjectNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,15 +8,18 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.time.ZoneId;
+import java.util.*;
+
+import static java.lang.Math.abs;
 
 @SpringBootApplication
 public class SchoolLibraryApplication {
 
+    private Random random = new Random();
     Logger logger = LoggerFactory.getLogger(SchoolLibraryApplication.class);
 
     public static void main(String[] args) {
@@ -25,40 +29,58 @@ public class SchoolLibraryApplication {
     @Bean
     public CommandLineRunner commandLineRunner(StudentRepository repository) {
         return args -> {
-			Student student1 = new Student(
-					"Kuriboh",
-					"YuGiOh",
-					"kuriboh@gmail.com",
-					"1234 street1 dr apt. 1234, Dallas,TX 1234-12345",
-					"(123)456-7890",
-					LocalDate.of(1999,8,7)
-			);
-
-			Student student2 = new Student(
-					"Psyduck",
-					"Pokemon",
-					"psyduck@gmail.com",
-					"4444 street2 ave apt. 4444, Dallas,TX 1234-12345",
-					"(444)222-4444",
-					LocalDate.of(2008,4,4)
-			);
-
-			repository.saveAll(Arrays.asList(
-					student1,
-					student2
-			));
-
-            Long studetCount = repository.count();
-            logger.info("number of students in the db: " + studetCount);
-
-            List<Student> students = repository.findAllByAgeGreaterThan18().get();
-            logger.info("students over age 18: " + students);
-
-            List<Student> studentsDomain = repository.findAllUseEmailDomain("@gmail.com").get();
-            logger.info("students use gmail mailing server : " + studentsDomain);
-
-            int deleteCounter = repository.deleteAllUseEmailDomain("@yahoo.com");
-            logger.info("The number of students deleted : " + deleteCounter);
+//            repository.saveAll(getRandomStudents());
+            repository
+                    .findAll(Sort.by(Sort.Direction.ASC, "firstName"))
+                    .forEach(student -> System.out.println(student.getFirstName()));
         };
+    }
+
+    private List<Student> getRandomStudents() {
+        // Testing purpose (Using Faker to generate a fake data, and then, save it to our database)
+        Faker faker = new Faker();
+        StringBuilder email = new StringBuilder();
+        String fname;
+        String lname;
+        List<Student> students = new ArrayList<>();
+
+        for (int i = 0; i < 100; i++) {
+            fname = faker.name().firstName();
+            lname = faker.name().lastName();
+            email.setLength(0);
+            email.append(fname.toLowerCase()).append(".").append(lname.toLowerCase()).append(getRandomDomainName());
+
+            students.add(
+                    new Student(
+                            fname,
+                            lname,
+                            ////// faker.internet().emailAddress()
+                            email.toString(),
+                            faker.address().fullAddress(),
+                            faker.phoneNumber().cellPhone(),
+                            LocalDate.ofInstant(faker.date().birthday(15, 35).toInstant(), ZoneId.of("CST", ZoneId.SHORT_IDS))
+                    )
+            );
+        }
+        return students;
+    }
+
+    private String getRandomDomainName() {
+        switch (abs(random.nextInt()) % 7) {
+            case 0:
+                return "@gmail.com";
+            case 1:
+                return "@yahoo.com";
+            case 2:
+                return "@Outlook.com";
+            case 3:
+                return "@icloud.com";
+            case 4:
+                return "@smu.edu";
+            case 5:
+                return "@utdallas.edu";
+            default:
+                return "@udrome.it.edu";
+        }
     }
 }
