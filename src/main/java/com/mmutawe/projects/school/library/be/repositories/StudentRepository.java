@@ -1,5 +1,6 @@
-package com.mmutawe.projects.school.library.be;
+package com.mmutawe.projects.school.library.be.repositories;
 
+import com.mmutawe.projects.school.library.be.entities.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -1,4 +1,4 @@
-package com.mmutawe.projects.school.library.be;
+package com.mmutawe.projects.school.library.be.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
