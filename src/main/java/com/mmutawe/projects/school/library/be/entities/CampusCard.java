@@ -1,6 +1,18 @@
 package com.mmutawe.projects.school.library.be.entities;
 
-import javax.persistence.*;
+import com.mmutawe.projects.school.library.be.data.enums.CardType;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity(name = "CampusCard")
 @Table(
@@ -32,7 +44,7 @@ public class CampusCard {
             name = "card_number",
             columnDefinition = "TEXT",
             nullable = false,
-            length = 32
+            length = 16
     )
     private String cardNumber;
 
@@ -42,27 +54,24 @@ public class CampusCard {
     )
     private CardType cardType;
 
-    public CampusCard() {
-    }
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(
-             name = "student_id",
+            name = "student_id",
             referencedColumnName = "id"
     )
     private Student student;
+
+    public CampusCard() {
+    }
 
     public CampusCard(String cardNumber, CardType cardType) {
         this.cardNumber = cardNumber;
         this.cardType = cardType;
     }
 
-
-}
-
-enum CardType {
-    BRONZE,
-    SILVER,
-    GOLD,
-    PLATINUM
+    public CampusCard(String cardNumber, CardType cardType, Student student) {
+        this.cardNumber = cardNumber;
+        this.cardType = cardType;
+        this.student = student;
+    }
 }
