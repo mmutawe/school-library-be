@@ -19,11 +19,8 @@ public class SchoolLibraryApplication {
     @Bean
     public CommandLineRunner commandLineRunner(StudentRepository studentRepository, CampusCardRepository campusCardRepository) {
         return args -> {
-
             campusCardRepository.saveAll(MockDataGenerator.getCampusCardsMockData());
-
-            studentRepository.saveAll(MockDataGenerator.getStudentsMockData());
-
+////            studentRepository.saveAll(MockDataGenerator.getStudentsMockData());
         };
     }
 }

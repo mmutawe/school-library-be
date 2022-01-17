@@ -86,6 +86,9 @@ public class Student {
     )
     private LocalDate birthday;
 
+//    @OneToOne(mappedBy = "students")
+//    private CampusCard campusCard;
+
     public Student() {
     }
 

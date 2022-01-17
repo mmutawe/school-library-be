@@ -2,17 +2,7 @@ package com.mmutawe.projects.school.library.be.entities;
 
 import com.mmutawe.projects.school.library.be.data.enums.CardType;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
 @Entity(name = "CampusCard")
 @Table(
@@ -54,10 +44,14 @@ public class CampusCard {
     )
     private CardType cardType;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
+    )
     @JoinColumn(
             name = "student_id",
-            referencedColumnName = "id"
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "student_id_fk")
     )
     private Student student;
 
@@ -73,5 +67,15 @@ public class CampusCard {
         this.cardNumber = cardNumber;
         this.cardType = cardType;
         this.student = student;
+    }
+
+    @Override
+    public String toString() {
+        return "CampusCard{" +
+                "id=" + id +
+                ", cardNumber='" + cardNumber + '\'' +
+                ", cardType=" + cardType +
+                ", student=" + student +
+                '}';
     }
 }
