@@ -1,13 +1,6 @@
 package com.mmutawe.projects.school.library.be.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,10 +40,14 @@ public class Event {
     )
     private String presenter;
 
-    @ManyToMany(
-            mappedBy = "events"
+    @OneToMany(
+            mappedBy = "event",
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.REMOVE
+            }
     )
-    private List<Student> students= new ArrayList<>();
+    private List<Enrolment> enrolments= new ArrayList<>();
 
     public Event() {
     }
@@ -91,6 +88,10 @@ public class Event {
 
     public void setPresenter(String presenter) {
         this.presenter = presenter;
+    }
+
+    public List<Enrolment> getEnrolments() {
+        return enrolments;
     }
 
     @Override

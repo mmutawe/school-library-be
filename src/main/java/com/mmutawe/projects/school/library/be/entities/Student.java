@@ -101,24 +101,14 @@ public class Student {
     )
     private final List<Book> books = new ArrayList<>();
 
-    @ManyToMany(
+    @OneToMany(
             cascade = {
                     CascadeType.REMOVE,
                     CascadeType.PERSIST
-            }
+            },
+            mappedBy = "student"
     )
-    @JoinTable(
-            name = "enrolment",
-            joinColumns = @JoinColumn(
-                    name = "student_id",
-                    foreignKey = @ForeignKey(name = "enrolment_Student_id_fk")
-            ),
-            inverseJoinColumns = @JoinColumn(
-                    name = "event_id",
-                    foreignKey = @ForeignKey(name = "enrolment_event_id_fk")
-            )
-    )
-    private List<Event> events = new ArrayList<>();
+    private List<Enrolment> enrolments = new ArrayList<>();
 
     public Student() {
     }
@@ -190,6 +180,10 @@ public class Student {
 
     public void setStudentCampusCars(CampusCard campusCard) {
         this.campusCard = campusCard;
+    }
+
+    public List<Enrolment> getEnrolments() {
+        return enrolments;
     }
 
     public List<Book> getBooks() {
