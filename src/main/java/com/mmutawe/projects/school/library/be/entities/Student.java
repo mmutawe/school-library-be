@@ -1,14 +1,9 @@
 package com.mmutawe.projects.school.library.be.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "Student")
 @Table(
@@ -89,6 +84,13 @@ public class Student {
 //    @OneToOne(mappedBy = "students")
 //    private CampusCard campusCard;
 
+    @OneToMany(
+            mappedBy = "student",
+            orphanRemoval = true,
+            cascade = CascadeType.ALL
+    )
+    private final List<Book> books = new ArrayList<>();
+
     public Student() {
     }
 
@@ -155,6 +157,10 @@ public class Student {
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
+    }
+
+    public List<Book> getBooks() {
+        return books;
     }
 
     @Override
