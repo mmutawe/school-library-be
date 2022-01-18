@@ -87,7 +87,10 @@ public class Student {
     @OneToMany(
             mappedBy = "student",
             orphanRemoval = true,
-            cascade = CascadeType.ALL
+            cascade = {
+                    CascadeType.REMOVE,
+                    CascadeType.PERSIST
+            }
     )
     private final List<Book> books = new ArrayList<>();
 
@@ -160,7 +163,7 @@ public class Student {
     }
 
     public List<Book> getBooks() {
-        return books;
+        return this.books;
     }
 
     @Override
