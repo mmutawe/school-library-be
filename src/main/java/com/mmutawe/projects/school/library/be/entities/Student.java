@@ -81,8 +81,15 @@ public class Student {
     )
     private LocalDate birthday;
 
-//    @OneToOne(mappedBy = "students")
-//    private CampusCard campusCard;
+    @OneToOne(
+            mappedBy = "student",
+            orphanRemoval = true,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.REMOVE
+            }
+    )
+    private CampusCard campusCard;
 
     @OneToMany(
             mappedBy = "student",
@@ -93,6 +100,25 @@ public class Student {
             }
     )
     private final List<Book> books = new ArrayList<>();
+
+    @ManyToMany(
+            cascade = {
+                    CascadeType.REMOVE,
+                    CascadeType.PERSIST
+            }
+    )
+    @JoinTable(
+            name = "enrolment",
+            joinColumns = @JoinColumn(
+                    name = "student_id",
+                    foreignKey = @ForeignKey(name = "enrolment_Student_id_fk")
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "event_id",
+                    foreignKey = @ForeignKey(name = "enrolment_event_id_fk")
+            )
+    )
+    private List<Event> events = new ArrayList<>();
 
     public Student() {
     }
@@ -160,6 +186,10 @@ public class Student {
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
+    }
+
+    public void setStudentCampusCars(CampusCard campusCard) {
+        this.campusCard = campusCard;
     }
 
     public List<Book> getBooks() {

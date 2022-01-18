@@ -16,6 +16,7 @@ public class SchoolLibraryApplication {
         SpringApplication.run(SchoolLibraryApplication.class, args);
     }
 
+/*
     @Bean
     public CommandLineRunner commandLineRunner(StudentRepository studentRepository, CampusCardRepository campusCardRepository) {
         return args -> {
@@ -23,4 +24,6 @@ public class SchoolLibraryApplication {
 ////            studentRepository.saveAll(MockDataGenerator.getStudentsMockData());
         };
     }
+ */
+
 }
