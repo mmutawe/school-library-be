@@ -6,11 +6,12 @@ import com.mmutawe.projects.school.library.be.repositories.StudentRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
+@EnableCaching
 public class SchoolLibraryApplication {
-//    Logger logger = LoggerFactory.getLogger(SchoolLibraryApplication.class);
 
     public static void main(String[] args) {
         SpringApplication.run(SchoolLibraryApplication.class, args);
