@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+// TODO *** update services with comprehensive possible cases ***
+// TODO *** implement customized exception handler ***
+
 @Service
 public class BookServiceImpl implements BookService{
 
@@ -21,21 +24,26 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public Book addBook(Book book) {
-        return null;
+        logger.info("Saving book with name + " + book.getBookName());
+        return bookRepository.save(book);
     }
 
     @Override
     public Book updateBook(Book book) {
-        return null;
+        logger.info("Updating book with name + " + book.getBookName());
+        return bookRepository.save(book);
     }
 
     @Override
     public Book getBook(long id) {
-        return null;
+        logger.info("retrieving book from DB");
+        return bookRepository.findById(id).orElse(null);
     }
 
     @Override
     public String deleteBook(long id) {
-        return null;
+        logger.info("book with id ("+ id +") is deleted from DB");
+        bookRepository.deleteById(id);
+        return "Book deleted ...";
     }
 }
